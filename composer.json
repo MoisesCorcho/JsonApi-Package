@@ -1,0 +1,20 @@
+{
+    "name": "jsonapi/jsonapi",
+    "version": "1.0.0",
+    "description": "Help in creating an API under the JSON:API specification",
+    "type": "no",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "JsonApi\\JsonApi\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "MoisesCorcho",
+            "email": "55525094+MoisesCorcho@users.noreply.github.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {}
+}
