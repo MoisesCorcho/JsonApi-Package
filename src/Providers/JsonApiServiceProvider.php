@@ -36,7 +36,11 @@ class JsonApiServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Se agregan mixins a las clases Builder y TestResponse para proporcionar funcionalidades específicas de la API JSON.
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                \JsonApi\JsonApi\Commands\GenerateJsonApiRoutes::class,
+            ]);
+        }
 
         // Agrega el mixin JsonApiQueryBuilder a la clase Builder de Eloquent para aplicar funcionalidades de construcción de consultas JSON API.
         Builder::mixin(new JsonApiQueryBuilder);

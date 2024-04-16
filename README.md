@@ -1,4 +1,3 @@
-
 # JsonApi-Package
 
 # Laravel JsonApi Mixins
@@ -194,6 +193,9 @@ $posts = Post::query()
     ->jsonPaginate();
 ```
 
+### Nota.
+Para el correcto uso de los Macros del Request se debe implementar el Laravel Request para la validacion ya que dentro de estas macros se hace uso de la funcion 'validated()' la cual hace parte de los antes mencionados (Por ejemplo, no se tendria acceso a esta funcion si se valida directamente con Request en el controlador).
+
 ## Request
 
 ### isJsonApi
@@ -317,6 +319,7 @@ public function store(AppointmentRequest $request): AppointmentResource
 - `$relations`: Las relaciones para las cuales se están verificando los enlaces de relaciones en la respuesta JSON:API.
 
 
+### Ejemplo de uso.
 ```php
 /** @test */
 public function guests_cannot_create_appointments()
@@ -455,5 +458,71 @@ Route::prefix('appointments/{appointment}')->group(function () {
             ->name('appointments.comments');
     });
 });
+
+```
+
+# Commands
+
+## Comando `generate:jsonapi-routes`
+
+Este comando genera rutas específicas para establecer relaciones entre modelos bajo la especificación JSON:API.
+
+### Uso
+```bash
+php artisan generate:jsonapi-routes --models=ModelOne-ModelTwo [--belongsTo] [--hasMany]
+```
+
+## Descripción
+
+Este comando genera tres tipos de rutas:
+
+1: Rutas de índice y actualización para establecer relaciones entre dos modelos.
+
+2: Ruta de visualización para obtener recursos relacionados con un modelo.
+
+## Opciones
+
+- `--models`: Especifica los nombres de los dos modelos entre los que se establecerá la relación, separados por un guion. Por ejemplo, `--models=Appointment-Comment`.
+- `--belongsTo`: Opcional. Especifica que la relación es de "pertenece a" (belongsTo). Por defecto, las relaciones se consideran de "tiene muchos" (hasMany).
+- `--hasMany`: Opcional. Especifica que la relación es de "tiene muchos" (hasMany). Solo se utiliza si la relación es de tipo "belongsTo".
+
+## Funcionamiento
+
+- El comando espera que se le pasen los nombres de dos modelos como argumentos. Luego, genera las rutas necesarias para establecer las relaciones entre los modelos.
+- Si se utiliza la opción `--belongsTo`, se generan rutas para establecer relaciones de "pertenece a".
+- Si se utiliza la opción `--hasMany` o si no se proporciona ninguna opción, se generan rutas para establecer relaciones de "tiene muchos".
+- Las rutas generadas siguen una convención basada en los nombres de los modelos proporcionados.
+- Las rutas se agregan al archivo `routes/api.php` del proyecto Laravel.
+
+## Ejemplo 1
+```
+php artisan generate:jsonapi-routes-testpackage --models=Appointment-Comment
+```
+
+```
+//Obtener el identificador del modelo Appointment asociado al modelo Comment
+Route::get('appointments/{appointment}/relationships/comment', [AppointmentCommentController::class, 'index'])->name('appointments.relationships.comment');
+
+//Actualizar el identificador del modelo Appointment asociado al modelo Comment
+Route::patch('appointments/{appointment}/relationships/comment', [AppointmentCommentController::class, 'update'])->name('appointments.relationships.comment');
+
+//Obtener el recurso del modelo Appointment asociado al modelo Comment
+Route::get('appointments/{appointment}/comment', [AppointmentCommentController::class, 'show'])->name('appointments.comment');
+```
+
+## Ejemplo 2
+```
+php artisan generate:jsonapi-routes-testpackage --models=Appointment-Comment --hasMany
+```
+
+```
+//Obtener el identificador del modelo Appointment asociado al modelo Comment
+Route::get('appointments/{appointment}/relationships/comments', [AppointmentCommentController::class, 'index'])->name('appointments.relationships.comments');
+
+//Actualizar el identificador del modelo Appointment asociado al modelo Comment
+Route::patch('appointments/{appointment}/relationships/comments', [AppointmentCommentController::class, 'update'])->name('appointments.relationships.comments');
+
+//Obtener el recurso del modelo Appointment asociado al modelo Comment
+Route::get('appointments/{appointment}/comments', [AppointmentCommentController::class, 'show'])->name('appointments.comments');
 
 ```
