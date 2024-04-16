@@ -11,6 +11,8 @@ Este paquete proporciona una serie de macros que simplifican el manejo de consul
 **Para Illuminate\Testing\TestResponse: *JsonApiTestResponse:***
 Presenta macros que extienden la clase TestResponse de Laravel para facilitar la verificación de respuestas que siguen la especificación JSON:API. Estas macros permiten verificar la presencia y el formato correcto de errores JSON:API, errores de validación, recursos JSON:API, colecciones de recursos JSON:API y enlaces de relaciones en las respuestas.
 
+También se proporcionan comandos útiles para la generación de rutas y Laravel Resources que facilitan la implementación de la especificación JSON:API.
+
 El paquete abarca varios aspectos clave para cumplir con la especificación JSON:API:
 
 1: **Creación de respuestas JSON:API coherentes**: El Trait `JsonApiResource` facilita la transformación de modelos y colecciones de Eloquent en respuestas JSON:API válidas, incluyendo la estructura correcta de los recursos, los enlaces de relaciones y los encabezados necesarios.
@@ -45,6 +47,44 @@ En resumen, este paquete proporciona herramientas integrales para establecer una
  ┃ ┗ 📜JsonApiResource.php
  ┗ 📜Document.php
 ```
+
+# Instalacion - Configuración
+Para instalar el paquete a través de este repositorio se deben hacer los siguientes cambios dentro del archivo composer.json de tu proyecto.
+
+```
+{
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/MoisesCorcho/JsonApi-Package.git"
+        }
+    ],
+    "require": {
+        "jsonapi/jsonapi": "dev-main"
+    }
+}
+```
+Luego se registra el proveedor de servicios `JsonApiServiceProvider` en tu archivo `config/app.php` para poder tener acceso a las Macros, Comandos y Formateo de errores.
+
+```php
+    'providers' => ServiceProvider::defaultProviders()->merge([
+        /*
+         * Package Service Providers...
+         */
+
+        /*
+         * Application Service Providers...
+         */
+        App\Providers\AppServiceProvider::class,
+        App\Providers\AuthServiceProvider::class,
+        // App\Providers\BroadcastServiceProvider::class,
+        App\Providers\EventServiceProvider::class,
+        App\Providers\RouteServiceProvider::class,
+        // Here
+        JsonApi\JsonApi\Providers\JsonApiServiceProvider::class,
+    ])->toArray(),
+```
+
 # Uso
 
 # Traits
@@ -96,29 +136,6 @@ En resumen, el Trait `JsonApiResource` simplifica y estandariza la creación de 
 
 
 # Macros - Mixins
-
-Para usar estos mixins, simplemente registra el proveedor de servicios `JsonApiServiceProvider` en tu archivo `config/app.php` y aplica las macros a tus consultas Eloquent.
-
-```php
-    'providers' => ServiceProvider::defaultProviders()->merge([
-        /*
-         * Package Service Providers...
-         */
-
-        /*
-         * Application Service Providers...
-         */
-        App\Providers\AppServiceProvider::class,
-        App\Providers\AuthServiceProvider::class,
-        // App\Providers\BroadcastServiceProvider::class,
-        App\Providers\EventServiceProvider::class,
-        App\Providers\RouteServiceProvider::class,
-        // Here
-        App\Providers\JsonApiServiceProvider::class,
-    ])->toArray(),
-```
-
-# Macros Disponibles
 
 ## Builder
 
@@ -622,3 +639,6 @@ class AuthorResource extends JsonResource
 }
 
 ```
+
+# Licencia 
+JsonApi-Package es un software de código abierto bajo la licencia [Licencia MIT](./LICENSE.bib)
