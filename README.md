@@ -526,3 +526,99 @@ Route::patch('appointments/{appointment}/relationships/comments', [AppointmentCo
 Route::get('appointments/{appointment}/comments', [AppointmentCommentController::class, 'show'])->name('appointments.comments');
 
 ```
+
+## Comando `make:apiResource`
+
+Este comando crea un nuevo recurso API bajo la especificación JSON:API.
+
+### Uso
+```bash
+php artisan make:apiResource {name}
+```
+
+## Parámetros
+- `{name}`: El nombre del recurso que se desea crear.
+
+## Funcionamiento
+1: El comando obtiene el nombre del recurso del argumento `{name}` pasado al comando.
+
+2: Lee el contenido del archivo stub del recurso desde la ubicación especificada.
+
+3: Reemplaza la cadena `{{resource}}` en el stub con el nombre del recurso proporcionado.
+
+4: Guarda el contenido del stub modificado como un nuevo archivo en el directorio de recursos (`app/Http/Resources`) con el nombre del recurso seguido de "Resource.php".
+
+5: Muestra un mensaje informativo en la consola indicando que el recurso se ha creado con éxito.
+
+Esta función facilita la creación de nuevos recursos API para Laravel con las funciones y los traits necesarios para cumplir con la especificación JSON:API.
+
+## Ejemplo
+
+```
+php artisan make:apiResource AuthorResource
+```
+
+```
+<?php
+
+namespace App\Http\Resources;
+
+use Illuminate\Http\Request;
+use JsonApi\JsonApi\Traits\JsonApiResource;
+use Illuminate\Http\Resources\Json\JsonResource;
+
+class AuthorResource extends JsonResource
+{
+    use JsonApiResource;
+
+    /**
+     * Se especifican en un arreglo los atributos del recurso
+     * que se quiere convertir en JSON.
+     *
+     * @return array
+     */
+    public function toJsonApi(): array
+    {
+        return [
+            // Define aquí los atributos que deseas incluir en el JSON API
+            // return [
+            //     'title' => $this->title,
+            //     'content' => $this->content
+            // ];
+        ];
+    }
+
+    /**
+     * Se especifican las relaciones de los links que se quieran
+     * generar.
+     *
+     * @return array
+     */
+    public function getRelationshipLinks(): array
+    {
+        return [
+            // Define aquí los nombres de las relaciones que deseas incluir en los enlaces de relaciones
+            // P. Ej.
+            // return ['category', 'author'];
+        ];
+    }
+
+    /**
+     * Se especifican las relaciones que se quieran incluir dentro
+     * del documento JSON:API.
+     *
+     * @return array
+     */
+    public function getIncludes(): array
+    {
+        return [
+            // Define aquí las relaciones que deseas incluir en el JSON API
+            // P. Ej.
+            //AuthorResource::make($this->whenLoaded('author')),
+            // Se llama al metodo collection ya que es una relacion de uno a muchos.
+            //CommentResource::collection($this->whenLoaded('comments'))
+        ];
+    }
+}
+
+```

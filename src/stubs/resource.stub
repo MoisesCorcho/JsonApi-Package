@@ -1,0 +1,61 @@
+<?php
+
+namespace App\Http\Resources;
+
+use Illuminate\Http\Request;
+use JsonApi\JsonApi\Traits\JsonApiResource;
+use Illuminate\Http\Resources\Json\JsonResource;
+
+class {{resource}} extends JsonResource
+{
+    use JsonApiResource;
+
+    /**
+     * Se especifican en un arreglo los atributos del recurso
+     * que se quiere convertir en JSON.
+     *
+     * @return array
+     */
+    public function toJsonApi(): array
+    {
+        return [
+            // Define aquí los atributos que deseas incluir en el JSON API
+            // return [
+            //     'title' => $this->title,
+            //     'content' => $this->content
+            // ];
+        ];
+    }
+
+    /**
+     * Se especifican las relaciones de los links que se quieran
+     * generar.
+     *
+     * @return array
+     */
+    public function getRelationshipLinks(): array
+    {
+        return [
+            // Define aquí los nombres de las relaciones que deseas incluir en los enlaces de relaciones
+            // P. Ej.
+            // return ['category', 'author'];
+        ];
+    }
+
+    /**
+     * Se especifican las relaciones que se quieran incluir dentro
+     * del documento JSON:API.
+     *
+     * @return array
+     */
+    public function getIncludes(): array
+    {
+        return [
+            // Define aquí las relaciones que deseas incluir en el JSON API
+            // P. Ej.
+            //AuthorResource::make($this->whenLoaded('author')),
+            // Se llama al metodo collection ya que es una relacion de uno a muchos.
+            //CommentResource::collection($this->whenLoaded('comments'))
+        ];
+    }
+}

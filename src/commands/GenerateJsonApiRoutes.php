@@ -13,7 +13,7 @@ class GenerateJsonApiRoutes extends Command
      *
      * @var string
      */
-    protected $signature = 'generate:jsonapi-routes-testpackage {--models=} {--belongsTo} {--hasMany}';
+    protected $signature = 'generate:jsonapi-routes {--models=} {--belongsTo} {--hasMany}';
 
     /**
      * The console command description.

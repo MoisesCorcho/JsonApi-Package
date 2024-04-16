@@ -39,6 +39,7 @@ class JsonApiServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
             $this->commands([
                 \JsonApi\JsonApi\Commands\GenerateJsonApiRoutes::class,
+                \JsonApi\JsonApi\Commands\MakeApiResource::class
             ]);
         }
 
