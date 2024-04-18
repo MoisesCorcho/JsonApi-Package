@@ -513,7 +513,7 @@ Este comando genera tres tipos de rutas:
 
 ## Ejemplo 1
 ```
-php artisan generate:jsonapi-routes-testpackage --models=Appointment-Comment
+php artisan generate:jsonapi-routes --models=Appointment-Comment
 ```
 
 ```
@@ -529,7 +529,7 @@ Route::get('appointments/{appointment}/comment', [AppointmentCommentController::
 
 ## Ejemplo 2
 ```
-php artisan generate:jsonapi-routes-testpackage --models=Appointment-Comment --hasMany
+php artisan generate:jsonapi-routes --models=Appointment-Comment --hasMany
 ```
 
 ```
